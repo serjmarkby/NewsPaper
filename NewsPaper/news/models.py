@@ -9,6 +9,13 @@ class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.SET_DEFAULT, verbose_name="Автор", default=2)
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
+    def __str__(self):
+        return f"{self.authorUser}"
+
+    class Meta:
+        verbose_name = 'Автор'
+        verbose_name_plural = 'Авторы'
+
     def update_rating(self):
         postRat = self.post_set.aggregate(postRating=Sum('rating'))
         pRat = 0
@@ -18,7 +25,7 @@ class Author(models.Model):
         cRat = 0
         cRat += commentRat.get('commentRating')
 
-        self.ratingAuthor = pRat * 3 + cRat
+        self.rating = pRat * 3 + cRat
         self.save()
 
 
@@ -54,6 +61,13 @@ class Category(models.Model):
         verbose_name="Категория"
     )
 
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.SET_DEFAULT, verbose_name="Автор", default=2)
@@ -72,6 +86,9 @@ class Post(models.Model):
     text = models.TextField(verbose_name="Текст")
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
+    def __str__(self):
+        return f'{self.title}'
+
     def like(self):
         self.rating += 1
         self.save()
@@ -83,10 +100,18 @@ class Post(models.Model):
     def preview(self):
         return f'{self.text[0:123]} ... {self.rating}'
 
+    class Meta:
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
+
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name="Статья")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
+
+    class Meta:
+        verbose_name = 'Категория новости'
+        verbose_name_plural = 'Категории новостей'
 
 
 class Comment(models.Model):
@@ -95,6 +120,10 @@ class Comment(models.Model):
     text = models.TextField(verbose_name="Текст")
     date_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
+
+    class Meta:
+        verbose_name = 'Коментарий'
+        verbose_name_plural = 'Комментарии'
 
     def like(self):
         self.rating += 1
