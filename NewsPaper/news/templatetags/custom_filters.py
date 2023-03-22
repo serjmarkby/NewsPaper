@@ -1,11 +1,11 @@
 from django import template
 
 register = template.Library()
+censor_list = ["Байден", "редиска", "псина"]
 
 
 @register.filter()
 def censor(value):
-    censor_list = ["Байден", "редиска", "псина"]
 
     list_value = value.split()
     result = ""
