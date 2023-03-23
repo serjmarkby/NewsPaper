@@ -86,6 +86,13 @@ class Post(models.Model):
     text = models.TextField(verbose_name="Текст")
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
+    def display_category(self):
+        """
+        Для получения категории в админке
+        """
+        return ', '.join([category.name for category in self.category.all()[:3]])
+    display_category.short_description = "Категория"
+
     def __str__(self):
         return f'{self.title}'
 
