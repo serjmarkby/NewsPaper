@@ -13,11 +13,13 @@ from .models import Post, Author, Category, PostCategory, Comment
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ("pk", "authorUser", "rating")
+    list_filter = ("rating", )
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("pk", "author", "type", "date_create", "title", "text", "rating")
+    list_display = ("pk", "author", "type", "date_create", "display_category", "title", "text", "rating")
+    list_filter = ("author", "rating")
 
 
 @admin.register(Category)
@@ -33,6 +35,7 @@ class PostCategoryAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("pk", "post", "authorUser", "text", "date_create", "rating")
+    list_filter = ("authorUser", "post", "rating")
 
 
 
