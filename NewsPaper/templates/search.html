@@ -5,15 +5,18 @@
 
 {% load custom_tags %}
 
-
 {% block title %}
-Свежие публикации
+Поиск
 {% endblock title %}
 
 
 {% block content %}
 <div class="col-12 pb-5">
-    <h2>Всего статей: {{posts|length}}</h2>
+    <h1>Найти публикацию</h1>
+        <form method="GET">
+    {{ filter.form }}
+    <input class="btn btn-primary" type="submit" value="Найти">
+</form>
 </div>
 {% if posts %}
 <div class="row">
@@ -36,7 +39,6 @@
         </div>
     </div>
 </div>
-{% endif %}
 <!-- Pagination-->
 <nav aria-label="Pagination pt-5">
     <ul class="pagination justify-content-center">
@@ -63,4 +65,5 @@
         {% endif %}
     </ul>
 </nav>
+{% endif %}
 {% endblock content %}

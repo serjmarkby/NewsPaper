@@ -1,0 +1,18 @@
+
+{% extends 'news/posts_list.html' %}
+
+{% block title %}
+Удаление публикации
+{% endblock title %}
+
+
+{% block content %}
+<div class="col-12 pb-5">
+    <h1>Удаление публикации</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Удаляем "{{object.title}}"?</p>
+        <input type="submit" value="Подтвердить" />
+    </form>
+</div>
+{% endblock content %}
