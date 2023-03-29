@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, ArticlForm
 from .filters import PostFilter
 
 # Create your views here.
@@ -56,6 +56,22 @@ class PostCrate(CreateView):
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.type = "NEWS"
+        return super().form_valid(form)
+
+
+class ArticleCrate(CreateView):
+    form_class = ArticlForm
+    model = Post
+    template_name = "post_edit.html"
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.type = "ARTI"
+        return super().form_valid(form)
 
 
 class PostUpdate(UpdateView):
