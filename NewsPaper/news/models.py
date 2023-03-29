@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.urls import reverse
 
 # Create your models here.
 
@@ -83,6 +84,7 @@ class Post(models.Model):
     date_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     category = models.ManyToManyField('Category', through='PostCategory', verbose_name="Категория")
     title = models.CharField(max_length=128, verbose_name="Заголовок")
+    img = models.ImageField(upload_to="posts", verbose_name="Изображение")
     text = models.TextField(verbose_name="Текст")
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
@@ -106,6 +108,9 @@ class Post(models.Model):
 
     def preview(self):
         return f'{self.text[0:123]} ... {self.rating}'
+
+    def get_absolute_url(self):
+        return reverse('post', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Новость'
