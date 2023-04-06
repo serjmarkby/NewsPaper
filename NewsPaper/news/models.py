@@ -84,7 +84,7 @@ class Post(models.Model):
     date_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     category = models.ManyToManyField('Category', through='PostCategory', verbose_name="Категория")
     title = models.CharField(max_length=128, verbose_name="Заголовок")
-    img = models.ImageField(upload_to="posts", verbose_name="Изображение")
+    img = models.ImageField(upload_to="posts", default="/wr-960.jpg", verbose_name="Изображение")
     text = models.TextField(verbose_name="Текст")
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
