@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post
 from .forms import PostForm, ArticlForm
 from .filters import PostFilter
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 # Create your views here.
 
@@ -52,7 +53,9 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
 
-class PostCrate(CreateView):
+class PostCrate(PermissionRequiredMixin, CreateView):
+    raise_exception = True
+    permission_required = ('news.add_post')
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
@@ -63,7 +66,9 @@ class PostCrate(CreateView):
         return super().form_valid(form)
 
 
-class ArticleCrate(CreateView):
+class ArticleCrate(PermissionRequiredMixin, CreateView):
+    raise_exception = True
+    permission_required = ('news.add_post')
     form_class = ArticlForm
     model = Post
     template_name = "post_edit.html"
@@ -74,13 +79,17 @@ class ArticleCrate(CreateView):
         return super().form_valid(form)
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    raise_exception = True
+    permission_required = ('news.change_post')
     form_class = PostForm
     model = Post
     template_name = "post_edit.html"
 
 
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    raise_exception = True
+    permission_required = ('news.delete_post')
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("posts")
