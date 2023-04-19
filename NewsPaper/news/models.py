@@ -31,36 +31,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(
-        max_length=18,
-        unique=True,
-        choices=[
-            ("animals", "Животные"),
-            ("children", "Дети"),
-            ("cinema", "Кинематограф"),
-            ("culture", "Культура"),
-            ("economics", "Экономика"),
-            ("family", "Семья"),
-            ("food", "Еда"),
-            ("health", "Здоровье"),
-            ("humor", "Юмор"),
-            ("investments", "Инвестиции"),
-            ("music", "Музыка"),
-            ("nature", "Природа"),
-            ("politics", "Политика"),
-            ("psychology", "Психология"),
-            ("religion", "Религия"),
-            ("science", "Наука"),
-            ("technology", "Технологии"),
-            ("sex", "Секс"),
-            ("society", "Общество"),
-            ("sports", "Спорт"),
-            ("study", "Учеба"),
-            ("travel", "Путешествия"),
-            ("work", "Работа")
-        ],
-        verbose_name="Категория"
-    )
+    name = models.CharField(max_length=18, unique=True, verbose_name="Категория")
 
     def __str__(self):
         return f'{self.name}'
@@ -134,7 +105,7 @@ class Comment(models.Model):
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
     class Meta:
-        verbose_name = 'Коментарий'
+        verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 
     def like(self):
@@ -144,3 +115,22 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+        verbose_name='Подписчик',
+    )
+    category = models.ForeignKey(
+        to=Category,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+        verbose_name='Категория',
+    )
+
+    class Meta:
+        verbose_name = 'Подписчик'
+        verbose_name_plural = 'Подписчики'

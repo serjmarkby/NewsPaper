@@ -46,9 +46,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    'accounts',
+    'django_apscheduler',
 ]
 
 SITE_ID = 1
+SITE_URL = 'http://127.0.0.1:8000/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,6 +99,29 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+# ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "example@yandex.ru"
+EMAIL_HOST_PASSWORD = "iliezvcovrxqizez"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = "example@yandex.ru"
+
+EMAIL_SUBJECT_PREFIX = "Лента"
+
+SERVER_EMAIL = "example@yandex.ru"
+MANAGERS = (
+    ('Ivan', 'ivan@yandex.ru'),
+    ('Petr', 'petr@yandex.ru'),
+)
+ADMINS = (
+    ('admin', 'admin@yandex.ru'),
+)
 
 
 # Database
@@ -157,3 +183,6 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

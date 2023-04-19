@@ -1,5 +1,5 @@
 
-{% extends 'news/posts_list.html' %}
+{% extends 'news/default.html' %}
 
 {% block title %}
 Добавить/обновить публикацию
@@ -13,7 +13,7 @@
         {% csrf_token %}
         {{ form.media }}
         {{ form.as_p }}
-        <button type ="submit" formmethod="post">Сохранить</button>
+        <button type ="submit" class="btn btn-lg btn-outline-primary" formmethod="post">Сохранить</button>
     </form>
 </div>
 {% endblock content %}

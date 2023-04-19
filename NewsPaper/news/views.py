@@ -1,10 +1,15 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
-from .forms import PostForm, ArticlForm
+from .models import Post, Category, Author, Subscription
+from .forms import PostForm
 from .filters import PostFilter
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+from django.contrib.auth.decorators import login_required
+from django.db.models import Exists, OuterRef
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 
@@ -53,7 +58,13 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
 
-class PostCrate(PermissionRequiredMixin, CreateView):
+class AuthorDetail(DetailView):
+    model = Author
+    template_name = 'author.html'
+    context_object_name = 'author'
+
+
+class PostCreate(PermissionRequiredMixin, CreateView):
     raise_exception = True
     permission_required = ('news.add_post')
     form_class = PostForm
@@ -63,19 +74,6 @@ class PostCrate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.type = "NEWS"
-        return super().form_valid(form)
-
-
-class ArticleCrate(PermissionRequiredMixin, CreateView):
-    raise_exception = True
-    permission_required = ('news.add_post')
-    form_class = ArticlForm
-    model = Post
-    template_name = "post_edit.html"
-
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        post.type = "ARTI"
         return super().form_valid(form)
 
 
@@ -93,3 +91,37 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("posts")
+
+
+@login_required
+@csrf_protect
+def subscriptions(request):
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        category = Category.objects.get(id=category_id)
+        action = request.POST.get('action')
+
+        if action == 'subscribe':
+            # if Subscription.objects.filter(user=request.user, category=category):
+
+            Subscription.objects.create(user=request.user, category=category)
+
+        elif action == 'unsubscribe':
+            Subscription.objects.filter(
+                user=request.user,
+                category=category,
+            ).delete()
+
+    categories_with_subscriptions = Category.objects.annotate(
+        user_subscribed=Exists(
+            Subscription.objects.filter(
+                user=request.user,
+                category=OuterRef('pk'),
+            )
+        )
+    ).order_by('name')
+    return render(
+        request,
+        'subscriptions.html',
+        {'categories': categories_with_subscriptions},
+    )

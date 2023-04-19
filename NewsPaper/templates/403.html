@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-   <meta charset="UTF-8">
-   <title>Ошибка 403</title>
-</head>
-<body>
-   Кажется, у Вас нет доступа к данной странице...
-</body>
-</html>
+{% extends 'news/default.html' %}
+
+{% load custom_filters %}
+
+
+{% block title %}
+Авторизуйтесь на сайте чтобы продолжить
+{% endblock title %}
+
+{% block content %}
+
+<h1 class="pb-3">Кажется вы не авторизованы...</h1>
+<h3 class="pb-3">Чтобы иметь возможность добавлять публикации, пожалуйста авторизуйтесь</h3>
+<div class="row pb-3">
+   <div class="col">
+      <a type="button" class="btn btn-primary" href="/accounts/login/">Авторизоваться</a>
+   </div>
+</div>
+
+
+{% endblock content %}

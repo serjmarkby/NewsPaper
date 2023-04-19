@@ -1,0 +1,34 @@
+{% extends 'news/default.html' %}
+
+{% block title %}
+Подписки на категории
+{% endblock title %}
+
+{% block content %}
+<h1 class="pt-2 pb-3">Категории новостей</h1>
+<div class="row pb-5">
+    {% for category in categories  %}
+    <div class="col p-1 g-2">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{category.name}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Кол-во публикаций</h6>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="category_id" value="{{ category.id }}" />
+
+                    {% if category.user_subscribed %}
+                    <button class="btn btn-secondary disabled" disabled>Вы подписаны</button>
+                    <button class="btn btn-danger" name="action" value="unsubscribe">Отписаться</button>
+                    {% else %}
+                    <button class="btn btn-primary" name="action" value="subscribe">Подписаться</button>
+                    <button class="btn btn-secondary disabled" disabled>Отписаться</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

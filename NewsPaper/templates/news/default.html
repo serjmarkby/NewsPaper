@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
-        <meta name="author" content="" />
+        <meta name="author" content="Ser. Markov" />
         {% load static %}
         <title>{% block title %}{% endblock title %}</title>
 
@@ -17,14 +17,18 @@
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#!">NewsPaper</a>
+                <a class="navbar-brand" href="/news">Лента / <span class="badge bg-light text-dark">{{user.username}}</span></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/news/search">Поиск</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/subscriptions/">Категории</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/author/{{author.authoruser.pk}}">Аккаунт</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="/accounts/logout/">Выйти</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="/accounts/signup/">Войти</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -82,7 +86,7 @@
         </div>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; NewsPaper 2023</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Лента 2023</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
