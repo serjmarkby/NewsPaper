@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Exists, OuterRef
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
+from tasks import push_subscribers
 
 # Create your views here.
 
@@ -74,6 +75,7 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.type = "NEWS"
+
         return super().form_valid(form)
 
 

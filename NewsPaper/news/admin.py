@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Author, Category, PostCategory, Comment
+from .models import Post, Author, Category, PostCategory, Comment, Subscription
 
 # Register your models here.
 
@@ -36,6 +36,12 @@ class PostCategoryAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("pk", "post", "authorUser", "text", "date_create", "rating")
     list_filter = ("authorUser", "post", "rating")
+
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ("pk", "user", "category")
+    list_filter = ("category", )
 
 
 

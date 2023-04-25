@@ -110,6 +110,12 @@ EMAIL_HOST_PASSWORD = "iliezvcovrxqizez"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
+CELERY_BROKER_URL = 'redis://default:00S7qtJVieoyY712otX6zS18Gvnd0T34@redis-11002.c275.us-east-1-4.ec2.cloud.redislabs.com:11002'
+CELERY_RESULT_BACKEND = 'redis://default:00S7qtJVieoyY712otX6zS18Gvnd0T34@redis-11002.c275.us-east-1-4.ec2.cloud.redislabs.com:11002'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
 DEFAULT_FROM_EMAIL = "example@yandex.ru"
 
 EMAIL_SUBJECT_PREFIX = "Лента"
@@ -186,3 +192,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+
+# celery -A NewsPaper worker -l INFO
